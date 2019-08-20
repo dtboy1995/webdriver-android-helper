@@ -1,18 +1,14 @@
 {
   "name": "webdriver-android-helper",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "a webdriver android helper",
   "main": "index.js",
   "directories": {
     "lib": "lib"
   },
-  "dependencies": {
-    "webdriverio": "^5.12.1"
-  },
+  "dependencies": {},
   "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dtboy1995/webdriver-android-helper.git"
