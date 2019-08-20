@@ -1,0 +1,31 @@
+{
+  "name": "webdriver-android-helper",
+  "version": "0.0.1",
+  "description": "a webdriver android helper",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {
+    "webdriverio": "^5.12.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dtboy1995/webdriver-android-helper.git"
+  },
+  "keywords": [
+    "webdriver",
+    "android",
+    "helper"
+  ],
+  "author": "dtboy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dtboy1995/webdriver-android-helper/issues"
+  },
+  "homepage": "https://github.com/dtboy1995/webdriver-android-helper#readme"
+}
