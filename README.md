@@ -8,7 +8,7 @@
 npm i webdriver-android-helper -S
 ```
 
-# usage
+### usage
 ```js
 const wd = require('webdriverio')
 const driver = wd.remote({})
