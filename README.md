@@ -34,24 +34,18 @@ const helper = new WdAndroidHelper(driver)
 |`waitActivityDestroy` | Waiting for the Activity Destroy | 
 |`slideOnElement` | Slide on element by direction | 
 |`slideOnScreen` | Slide on screen by direction | 
-|`setTextAndTriggerChange` | set text and trigger change event on EditText | 
+|`setElTextAndPressSB` | set text and trigger change event on EditText | 
 |`backToActivity` | Back to the designated Activity  | 
-
+|`findElByIdAndSetText` | Find element by Android Id And set text | 
+|`findElByXpathAndSetText` | Find element by xpath And set text | 
+|`moment` | wait for between 1s - 3s | 
+|`findElByMatcherInViews` | find element in listviews by matcher function | 
 ### sample
 ```js
 const wdio = require('webdriverio')
 const WdAndroidHelper = require('webdriver-android-helper')
-/**
-* start a ss android client
-*/
-async function startSs(
-    device,
-    ip,
-    port,
-    password,
-    encrypt,
-    debug = true,
-    systemPort = 8203) {
+// sample to Init ss client
+async function startSs() {
     let driver
     try {
         driver = await wdio.remote({
@@ -59,75 +53,60 @@ async function startSs(
             capabilities: {
                 "platformName": "Android",
                 "platformVersion": "5",
-                "deviceName": device,
+                "deviceName": 'emulator-555',
                 "appPackage": "com.github.shadowsocks",
                 "appActivity": ".MainActivity",
                 "automationName": "UiAutomator2",
                 "noReset": true,
-                "udid": device,
+                "udid": 'emulator-555',
                 "autoGrantPermissions": true,
-                "systemPort": systemPort
+                "systemPort": 8203
             },
-            logLevel: !debug ? 'silent' : 'trace'
+            logLevel: !debug ? 'silent' : 'error'
         })
         const helper = new WdAndroidHelper(driver)
         await driver.unlock()
-        // wait enter MainActivity
+        // wait MainActivity
         await helper.waitActivityResumed('.MainActivity')
-        await driver.pause(1500)
+        await helper.moment()
         // start edit 
         await helper.findElByIdAndClick('com.github.shadowsocks:id/edit')
-        await driver.pause(2000)
+        await helper.moment()
         // set ip
         await helper.findElByXpathAndClick('/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.View/android.widget.LinearLayout[3]/android.widget.RelativeLayout')
-        await driver.pause(2000)
-        const ipInput = await helper.findElByIdAndClick('android:id/edit')
-        await ipInput.setValue(ip)
-        await driver.pause(1500)
+        await helper.moment()
+        await helper.findElByIdAndSetText('android:id/edit', 'ssr ip')
+        await helper.moment()
         await helper.findElByIdAndClick('android:id/button1')
-        await driver.pause(2000)
+        await helper.moment()
         // set port
         await helper.findElByXpathAndClick('/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.View/android.widget.LinearLayout[4]/android.widget.RelativeLayout')
-        await driver.pause(2000)
-        const portInput = await helper.findElByIdAndClick('android:id/edit')
-        await portInput.setValue(port)
-        await driver.pause(1500)
+        await helper.moment()
+        await helper.findElByIdAndSetText('android:id/edit', 'ssr port')
+        await helper.moment()
         await helper.findElByIdAndClick('android:id/button1')
-        await driver.pause(2000)
+        await helper.moment()
         // set password
         await helper.findElByXpathAndClick('/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.View/android.widget.LinearLayout[5]/android.widget.RelativeLayout/android.widget.TextView[2]')
-        await driver.pause(2000)
-        const passInput = await helper.findElByIdAndClick('android:id/edit')
-        await passInput.setValue(password)
-        await driver.pause(1500)
+        await helper.moment()
+        await helper.findElByIdAndSetText('android:id/edit', 'ssr password')
+        await helper.moment()
         await helper.findElByIdAndClick('android:id/button1')
-        await driver.pause(2000)
+        await helper.moment()
         // set encrypt
         await helper.findElByXpathAndClick('/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.View/android.widget.FrameLayout[1]/android.widget.LinearLayout/android.widget.RelativeLayout')
-        let finded = false
-        while (!finded) {
-            const encryptViews = await helper.findElsById('android:id/text1')
-            for (let i = 0; i < encryptViews.length; i++) {
-                const encryptView = encryptViews[i];
-                const encryptText = await encryptView.getText()
-                if (encryptText === encrypt.toUpperCase()) {
-                    await encryptView.click()
-                    finded = true
-                    break
-                }
-            }
-            if (!finded) {
-                const container = await helper.findElByXpath('/hierarchy/android.widget.FrameLayout/android.view.View')
-                await helper.slideOnElement(container, 'top')
-                await driver.pause(2000)
-            }
-        }
+        await helper.moment()
+        await helper.findElByMatcherInViews('/hierarchy/android.widget.FrameLayout/android.view.View', 'android:id/text1', async (item) => {
+            const text = await item.getText()
+            return text === 'ssr encrypt type'.toUpperCase()
+        }, async (item) => {
+            await item.click()
+        })
         await helper.findElByIdAndClick('com.github.shadowsocks:id/action_apply')
         await helper.waitActivityDestroy('.ProfileConfigActivity')
-        await driver.pause(2000)
-        // start
+        await helper.moment()
+        // final start
         await helper.findElByIdAndClick('com.github.shadowsocks:id/fab')
-
     } catch (err) {
         console.log(err)
     }
