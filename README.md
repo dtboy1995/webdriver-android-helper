@@ -40,6 +40,7 @@ const helper = new WdAndroidHelper(driver)
 |`findElByXpathAndSetText` | Find element by xpath And set text | 
 |`moment` | wait for between 1s - 3s | 
 |`findElByMatcherInViews` | find element in listviews by matcher function | 
+|`isThisActivity` | Determine if the current activity is the specified activity  | 
 ### sample
 ```js
 const wdio = require('webdriverio')
@@ -53,12 +54,12 @@ async function startSs() {
             capabilities: {
                 "platformName": "Android",
                 "platformVersion": "5",
-                "deviceName": 'emulator-555',
+                "deviceName": 'emulator-5554',
                 "appPackage": "com.github.shadowsocks",
                 "appActivity": ".MainActivity",
                 "automationName": "UiAutomator2",
                 "noReset": true,
-                "udid": 'emulator-555',
+                "udid": 'emulator-5554',
                 "autoGrantPermissions": true,
                 "systemPort": 8203
             },
@@ -107,6 +108,12 @@ async function startSs() {
         await helper.moment()
         // final start
         await helper.findElByIdAndClick('com.github.shadowsocks:id/fab')
+        await helper.moment(3000, 3500)
+        const is = await helper.isThisActivity('.ConfirmDialog')
+        if (is) {
+            await helper.moment()
+            await helper.findElByIdAndClick('android:id/button1')
+        }
     } catch (err) {
         console.log(err)
     }
