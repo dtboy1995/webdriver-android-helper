@@ -31,6 +31,7 @@ const helper = new WdAndroidHelper(driver)
 |`waitElFinded` | Waiting for the element to be found | 
 |`waitElsFinded` | Waiting for the elements to be found  | 
 |`waitActivityResumed` | Waiting for the Activity Resume  | 
+|`waitActivitiesResumed` | Waiting for the Some Activities Resume  | 
 |`waitActivityDestroy` | Waiting for the Activity Destroy | 
 |`slideOnElement` | Slide on element by direction | 
 |`slideOnScreen` | Slide on screen by direction | 
@@ -41,6 +42,8 @@ const helper = new WdAndroidHelper(driver)
 |`moment` | wait for between 1s - 3s | 
 |`findElByMatcherInViews` | find element in listviews by matcher function | 
 |`isThisActivity` | Determine if the current activity is the specified activity  | 
+|`pushImages` | Push images to  /sdcard/DCIM/Camera/ | 
+|`log` | Append log to file | 
 ### sample
 ```js
 const wdio = require('webdriverio')
